@@ -75,7 +75,7 @@ function App() {
 
       {isLoading && <Loader />}
 
-      {result !== "" && (
+      {result !== "" && !isLoading && (
         <h3 style={{ color: "Blue", textAlign: "center" }}>
           Result:<span> {result}</span>
         </h3>
