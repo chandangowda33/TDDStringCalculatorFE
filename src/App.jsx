@@ -1,9 +1,11 @@
 import { useState } from "react";
+import Loader from "./Loader";
 
 function App() {
   const [string, setString] = useState("");
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setisLoading] = useState(false);
 
   async function getResult(string) {
     if (!string) string = "0";
@@ -26,7 +28,7 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setisLoading(true);
     try {
       const data = await getResult(string);
       setResult(data.result);
@@ -34,6 +36,8 @@ function App() {
     } catch (err) {
       setError(err.message);
       setResult("");
+    } finally {
+      setisLoading(false);
     }
   };
 
@@ -64,8 +68,12 @@ function App() {
           onChange={(e) => setString(e.target.value)}
           placeholder="Enter the string"
         />
-        <button type="submit">Calculate</button>
+        <button type="submit" disabled={isLoading}>
+          Calculate
+        </button>
       </form>
+
+      {isLoading && <Loader />}
 
       {result !== "" && (
         <h3 style={{ color: "Blue", textAlign: "center" }}>
